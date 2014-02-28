@@ -8,6 +8,9 @@
 long getSizeOfInput(FILE *input){
 	long retvalue = 0;
 	int c;
+	// only print n lines
+	int maxn = 5;
+	int tn = 0;
 
 	if (input != stdin) {
 		if (-1 == fseek(input, 0L, SEEK_END)) {
@@ -27,7 +30,12 @@ long getSizeOfInput(FILE *input){
 		while (EOF != (c = fgetc(input))) {
 			if ( c == '\n' ) {
 				retvalue++;
-				fprintf(stdout, "Found %d lines so far.\r", retvalue);
+				if ( tn >= maxn ) {
+					fprintf(stdout, "\rFound %d lines so far.", retvalue);
+					tn = 0;
+				} else {
+					tn++;
+				}
 			}
 		}
 	}
@@ -53,7 +61,7 @@ int main(int argc, char **argv) {
 		input = stdin;
 	}
 
-	printf("\nSize of file: %ld\n", getSizeOfInput(input));
+	printf("\rTotal lines: %ld                   \n", getSizeOfInput(input));
 
 	return EXIT_SUCCESS;
 }
